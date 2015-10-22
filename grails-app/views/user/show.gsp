@@ -20,6 +20,12 @@
             <div class="message" role="status">${flash.message}</div>
             </g:if>
             <f:display bean="user" />
+            <fieldset class="form">
+                <g:if test="${processCount}">
+                    <p>There are ${processCount} running processes, ${myProcessCount} of which are for this user</p>
+                </g:if>
+                <p><a href="/user/addReport?user.id=${user.id}">Add Report</a></p>
+            </fieldset>
             <g:form resource="${this.user}" method="DELETE">
                 <fieldset class="buttons">
                     <g:link class="edit" action="edit" resource="${this.user}"><g:message code="default.button.edit.label" default="Edit" /></g:link>

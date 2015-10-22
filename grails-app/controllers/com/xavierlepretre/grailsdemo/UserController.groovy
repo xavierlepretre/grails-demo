@@ -1,5 +1,9 @@
 package com.xavierlepretre.grailsdemo
 
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.countMyProcesses
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.countProcesses
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.createProcess
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.createReportsForDoneProcesses
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -14,7 +18,11 @@ class UserController {
     }
 
     def show(User user) {
-        respond user
+        createReportsForDoneProcesses()
+        render(view: "show",
+                model: [user          : user,
+                        processCount  : countProcesses(),
+                        myProcessCount: countMyProcesses(user)])
     }
 
     def create() {
@@ -93,6 +101,11 @@ class UserController {
             }
             '*'{ render status: NO_CONTENT }
         }
+    }
+
+    def addReport(User user) {
+        createProcess(user)
+        redirect(action: "show", id: user.id)
     }
 
     protected void notFound() {

@@ -1,5 +1,7 @@
 package com.xavierlepretre.grailsdemo
 
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.countProcesses
+import static com.xavierlepretre.grailsdemo.ReportProcessCounterUtil.createReportsForDoneProcesses
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
 
@@ -9,11 +11,13 @@ class ReportController {
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
     def index(Integer max) {
+        createReportsForDoneProcesses()
         params.max = Math.min(max ?: 10, 100)
-        respond Report.list(params), model:[reportCount: Report.count()]
+        respond Report.list(params), model:[reportCount: Report.count(), processCount  : countProcesses()]
     }
 
     def show(Report report) {
+        createReportsForDoneProcesses()
         respond report
     }
 

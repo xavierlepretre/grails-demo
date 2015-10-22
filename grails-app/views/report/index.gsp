@@ -23,6 +23,11 @@
             <div class="pagination">
                 <g:paginate total="${reportCount ?: 0}" />
             </div>
+            <g:if test="${processCount}">
+                <fieldset class="form">
+                    <p>There are ${processCount} running processes</p>
+                </fieldset>
+            </g:if>
         </div>
     </body>
 </html>
