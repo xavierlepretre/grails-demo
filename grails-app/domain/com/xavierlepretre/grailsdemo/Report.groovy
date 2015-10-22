@@ -2,11 +2,25 @@ package com.xavierlepretre.grailsdemo
 
 class Report {
 
-    String name;
-
     static belongsTo = [author: User]
 
     static constraints = {
-        name nullable: false, blank: false
+    }
+
+    static mapping = {
+    }
+
+    /**
+     * This name will depend on the position of the report in the collection of reports
+     * of the user.
+     * As such, if report_1 is deleted, then report_2 will be renamed into report_1.
+     * @return
+     */
+    String getReportName() {
+        return "report_" + getPosition()
+    }
+
+    int getPosition() {
+        return author.reports.indexOf(this) + 1;
     }
 }
