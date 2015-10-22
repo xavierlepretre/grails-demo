@@ -17,7 +17,11 @@ class Report {
      * @return
      */
     String getReportName() {
-        return "report_" + getPosition()
+        def name = "report_" + getPosition()
+        if (author.locale.equals(new Locale("fr", "FR"))) {
+            return new Rot13Util().redundanceFreeRot13(name)
+        }
+        return name
     }
 
     int getPosition() {
